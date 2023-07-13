@@ -1,0 +1,70 @@
+#include <iostream>
+#include "image.h"
+//#include "igg_image/io_tools.h"
+
+igg::Image::Image(int rows, int cols) : rows_{rows}, cols_{cols}
+{
+    data_.resize(rows * cols);
+}
+
+// Get image row size
+int igg::Image::rows() const { return rows_; }
+
+// Get image column size
+int igg::Image::cols() const { return cols_; }
+
+// Get the gray value at specific point
+int igg::Image::at(int rows, int cols) const
+{
+    return data_[cols_ * (rows - 1) + cols - 1];
+}
+
+// Set the gray value at specific point
+int &igg::Image::at(int rows, int cols)
+{
+    return data_[cols_ * (rows - 1) + cols - 1];
+}
+
+void igg::Image::WriteToPgm(const std::string &file_name)
+{
+    igg::io_tools::ImageData TransferImage;
+    TransferImage.cols = cols_;
+    TransferImage.rows = rows_;
+    TransferImage.max_val = max_val_;
+    TransferImage.data = data_;
+
+    igg::io_tools::WriteToPgm(TransferImage, file_name);
+}
+
+bool igg::Image::FillFromPgm(const std::string &file_name)
+{
+    igg::io_tools::ImageData TransferImageToWrite;
+    TransferImageToWrite = igg::io_tools::ReadFromPgm(file_name);
+
+    cols_ = TransferImageToWrite.cols;
+    rows_ = TransferImageToWrite.rows;
+    max_val_ = TransferImageToWrite.max_val;
+    // data_.resize(TransferImageToWrite.cols * TransferImageToWrite.rows);
+    data_.swap(TransferImageToWrite.data);
+    return true;
+}
+
+std::vector<float> igg::Image::ComputeHistogram(int bins) const
+{
+    // UNFINISHED FUNCTION
+    std::vector<float> CalculatedHistogram(bins, 0);
+    CalculatedHistogram[0] = 0;
+
+    for (int i = 0; i < bins; ++i)
+    {
+        for (const int &num : data_)
+        {
+            if (num < (256 / (float)bins * (i + 1)) && (num >= (256 / (float)bins * i)))
+            {
+                CalculatedHistogram[i] += 1;
+            }
+        }
+    }
+
+    return CalculatedHistogram;
+}
