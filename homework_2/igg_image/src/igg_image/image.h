@@ -9,9 +9,9 @@ namespace igg
   class Image
   {
   public:
-    Image() {};
+    Image(){};
     Image(int rows, int cols);
-    
+
     // Get image row size
     int rows() const;
 
@@ -25,11 +25,15 @@ namespace igg
     // Only accepts uint8 values
     int &at(int rows, int cols);
 
-    bool FillFromPgm(const std::string& file_name);
-    void WriteToPgm(const std::string& file_name);
+    bool FillFromPgm(const std::string &file_name);
+    void WriteToPgm(const std::string &file_name);
 
     // Calculate Histogram for the specified number of bins.
     std::vector<float> ComputeHistogram(int bins) const;
+
+    // Downscale and Upscale of the image
+    void DownScale(int scale);
+    void UpScale(int scale);
 
   private:
     int rows_ = 0;

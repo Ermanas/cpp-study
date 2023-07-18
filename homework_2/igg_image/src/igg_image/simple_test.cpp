@@ -15,8 +15,10 @@ int main()
         }
     }
 
-    std::string read_file_name = "/media/rnd/108285D08285BB2C/Users/Ermanas/Documents/code/cpp_modern/homework_2/igg_image/data/lena.ascii.pgm";
+    std::string read_file_name = "/home/rnd/Documents/code/cpp-study/homework_2/igg_image/data/test.ascii.pgm";
     Sample_Image.FillFromPgm(read_file_name);
+
+    Sample_Image.DownScale(2);
 
     std::string my_file_name = "/home/rnd/test_image.pgm";
     Sample_Image.WriteToPgm(my_file_name);
@@ -29,5 +31,5 @@ int main()
         std::cout << num << std::endl;
     }
 
-    std::cout << std::accumulate(CalculatedHistogram.begin(), CalculatedHistogram.end(), 0) << std::endl;
+    std::cout << "Total Pixel Count: " << std::accumulate(CalculatedHistogram.begin(), CalculatedHistogram.end(), 0) << std::endl;
 }
